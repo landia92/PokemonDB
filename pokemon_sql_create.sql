@@ -27,6 +27,7 @@ CREATE TABLE poke_dex(
     dex_type2 INT,
     evolution_stage INT NOT NULL,
     evolution_from_id INT,
+    can_evolution BOOLEAN NOT NULL,
     is_legendary BOOLEAN NOT NULL,
     FOREIGN KEY (evolution_from_id) REFERENCES poke_dex(dex_id),
     FOREIGN KEY (dex_type1) REFERENCES pokemon_type(type_id),
@@ -34,13 +35,14 @@ CREATE TABLE poke_dex(
 );
 
 CREATE TABLE pokemon(
-    pokemon_id INT PRIMARY KEY,
+    pokemon_id INT PRIMARY KEY AUTO_INCREMENT,
+    poke_dex_id INT NOT NULL,
     pokemon_hp INT NOT NULL,
     pokemon_skill_id1 INT NOT NULL,
     pokemon_skill_id2 INT,
     pokemon_skill_id3 INT,
     pokemon_skill_id4 INT,
-    FOREIGN KEY (pokemon_id) REFERENCES poke_dex(dex_id),
+    FOREIGN KEY (poke_dex_id) REFERENCES poke_dex(dex_id),
     FOREIGN KEY (pokemon_skill_id1) REFERENCES skill(skill_id),
     FOREIGN KEY (pokemon_skill_id2) REFERENCES skill(skill_id),
     FOREIGN KEY (pokemon_skill_id3) REFERENCES skill(skill_id),
@@ -48,7 +50,8 @@ CREATE TABLE pokemon(
 );
 
 CREATE TABLE trainer_owned_pokemon(
-    owner_id INT PRIMARY KEY,
+    top_id INT PRIMARY KEY AUTO_INCREMENT,
+    owner_id INT NOT NULL,
     owned_pokemon_id INT NOT NULL,
     FOREIGN KEY (owner_id) REFERENCES trainer(trainer_id),
     FOREIGN KEY (owned_pokemon_id) REFERENCES pokemon(pokemon_id)
